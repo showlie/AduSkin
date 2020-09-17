@@ -335,7 +335,10 @@ namespace AduSkin.Controls.Metro
          this.SetEvent();
 
          //回显密码
-         this.SetText(this.ConvertToPasswordChar(this.Password.Length));
+         //在密码为空的情况下，会出现System.NullReferenceExpcetion异常，因此需要检测密码是否为空。
+         int passwordLenght = string.IsNullOrEmpty(this.Password)?0:this.Password.Length;
+         this.SetText(this.ConvertToPasswordChar(passwordLength));
+         
 
          //密码框禁止复制
          this.CommandBindings.Add(new System.Windows.Input.CommandBinding(ApplicationCommands.Copy, CommandBinding_Executed, CommandBinding_CanExecute));
