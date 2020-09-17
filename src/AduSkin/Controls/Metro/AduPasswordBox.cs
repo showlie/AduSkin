@@ -407,22 +407,24 @@ namespace AduSkin.Controls.Metro
       {
          if (!this.mIsHandledTextChanged)
             return;
-
-         foreach (TextChange c in e.Changes)
+         if(!string.IsNullOrEmpty(this.Password))
          {
-            //从密码文中根据本次Change对象的索引和长度删除对应个数的字符
-            this.Password = this.Password.Remove(c.Offset, c.RemovedLength);
-            //将Text新增的部分记录给密码文
-            this.Password = this.Password.Insert(c.Offset, Text.Substring(c.Offset, c.AddedLength));
+            foreach (TextChange c in e.Changes)
+            {
+               //从密码文中根据本次Change对象的索引和长度删除对应个数的字符
+               this.Password = this.Password.Remove(c.Offset, c.RemovedLength);
+               //将Text新增的部分记录给密码文
+               this.Password = this.Password.Insert(c.Offset, Text.Substring(c.Offset, c.AddedLength));
+            }
          }
-
+         int textLength = string.IsNullOrEmpty(this.Text)?0:this.Text.Length;
          if (!this.ShowPassword)
          {
-            this.SetText(ConvertToPasswordChar(Text.Length));
+            this.SetText(ConvertToPasswordChar(textLength));
          }
 
          //将光标放到最后面
-         this.SelectionStart = this.Text.Length + 1;
+         this.SelectionStart = textLength + 1;
       }
 
       private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
